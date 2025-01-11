@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Авторизация</title>
+    <link rel="stylesheet" href="{% static 'users/css/login.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark mb-4" style="background-color:#3097D1">
+        <a href="{% url 'posts:index'%}" class="navbar-brand"><img src="{% static 'img/brand-white.png' %}" alt="logo" class="img-fluid" width="80px" height="100px"></a>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#responsive"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="responsive">
+            <ul class="navbar-nav mr-auto text-capitalize">
+                <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'users:profile'%}" class="nav-link">Профиль</a></li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
+                {% endif %}
+                <li class="nav-item"><a href="#modalview" class="nav-link" data-toggle="modal">messages</a></li>
+                <li class="nav-item"><a href="notification.html" class="nav-link">docs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
+                <li class="nav-item"><a href="#" class="nav-link d-md-none">logout</a></li>
+            </ul>
+            <form action="" class="form-inline ml-auto d-none d-md-block">
+                <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
+            </form>
+            <a href="notification.html" class="text-decoration-none" style="color:#CBE4F2;font-size:22px;"><i class="far fa-bell ml-3 d-none d-md-block"></i></a>
+            <img src="static/img/avatar-dhg.png" alt="" class="rounded-circle ml-3 d-none d-md-block" width="32px" height="32px">
+        </div>
+    </nav>
+  <div class="container1">
+      <div class="row justify-content-center">
+          <div class="error-container">
+              <div class="col-lg-7">
+              {% if messages or form.non_field_errors %}
+              <div class="alert {% if messages %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show" role="alert">
+                  {% if messages%}
+                        {% for message in messages %}
+                            {{ message}}
+                        {% endfor %}
+                  {% else%}
+                        {{ form.non_field_errors}}
+                  {% endif %}
+              </div>
+              {% endif %}
+              </div>
+          </div>
+      </div>
+      <div class="wrapper">
+        <div class="title"><span>Авторизация</span></div>
+          <form action="{% url 'users:login'%}" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <i class="fas fa-user"></i>
+            {{ form.username }}
+          </div>
+          <div class="row">
+            <i class="fas fa-lock"></i>
+            {{ form.password }}
+          </div>
+          <div class="row button">
+            <input type="submit" value="Войти">
+          </div>
+          <div class="signup-link">Не зарегистрированы? <a href="{% url 'users:registration' %}">Зарегистрироваться</a></div>
+        </form>
+      </div>
+
+    </div>
+  </body>
+<script>
+        lightbox.option({
+
+        })
+    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</html>
