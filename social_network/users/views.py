@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponseRedirect
-from .forms import UserLoginForm, UserRegistrationForm
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from .forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from django.urls import reverse
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from .models import User
 
 
 def login(request):
@@ -35,8 +36,23 @@ def registration(request):
 
 
 @login_required
-def profile(request):
-    user = request.user
-    context = {'user': user}
+def profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)  # Получаем пользователя по ID
+    is_owner = request.user == user
+    if request.method == 'POST' and is_owner:
+        form = UserProfileForm(data=request.POST, instance=user, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:profile', args=[user.id]))
+    else:
+        form = UserProfileForm(instance=user)
+
+    context = {'user': user, 'form': form, 'is_owner': is_owner}
     return render(request, 'users/profile.html', context)
 
+
+# def user_profile(request):
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('posts:index'))
