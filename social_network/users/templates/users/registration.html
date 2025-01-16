@@ -17,7 +17,7 @@
             <ul class="navbar-nav mr-auto text-capitalize">
                 <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
                 {% if user.is_authenticated %}
-                <li class="nav-item"><a href="{% url 'users:profile'%}" class="nav-link">Профиль</a></li>
+                <li class="nav-item"><a href="{% url 'users:profile' request.user.id%}" class="nav-link">Профиль</a></li>
                 {% else %}
                 <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
                 {% endif %}

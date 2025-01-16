@@ -12,6 +12,7 @@
 </head>
 
 <body>
+
   <div class="container">
     <div class="row">
       <nav class="menu">
@@ -121,11 +122,10 @@
 <!--          <div class="timer">1 week</div>-->
 <!--        </div>-->
       </section>
-      {% for message in messages%}
       <section class="chat">
         <div class="header-chat">
           <i class="icon fa fa-user-o" aria-hidden="true"></i>
-          <p class="name">{{ user.username }}</p>
+          <p class="name"></p>
           <i class="icon clickable fa fa-ellipsis-h right" aria-hidden="true"></i>
         </div>
         <div class="messages-chat">

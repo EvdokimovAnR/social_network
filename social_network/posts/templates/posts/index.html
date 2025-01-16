@@ -28,10 +28,11 @@
                 <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a href="{% url 'users:profile' request.user.id %}" class="nav-link">Профиль</a></li>
+                <li class="nav-item"><a href="{% url 'chats:message' user.id %}" class="nav-link">Сообщения</a></li>
                 {% else %}
                 <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
                 {% endif %}
-                <li class="nav-item"><a href="{% url 'chats:chats'%}" class="nav-link">Сообщения</a></li>
+
 <!--                <li class="nav-item"><a href="notification.html" class="nav-link">docs</a></li>-->
 <!--                <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>-->
 <!--                <li class="nav-item"><a href="{% url 'users:logout'%}" class="nav-link">logout</a></li>-->
