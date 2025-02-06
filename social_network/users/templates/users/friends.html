@@ -1,0 +1,352 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница Друзей</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+
+
+        .form-control {
+            border-radius: 20px;
+            border: 1px solid #CBE4F2;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .form-control::placeholder {
+            color: #CBE4F2;
+        }
+
+        .fa-bell {
+            transition: transform 0.3s ease;
+        }
+
+        .fa-bell:hover {
+            transform: scale(1.2);
+        }
+
+        .rounded-circle {
+            transition: transform 0.3s ease;
+        }
+
+        .rounded-circle:hover {
+            transform: scale(1.1);
+        }
+
+        header {
+            background: white;
+            color: black;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        #search {
+            margin-top: 20px;
+            padding: 10px 20px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 25px;
+            border: 2px solid #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        #search:focus {
+            outline: none;
+            border-color: #CBE4F2;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .friends-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .friend-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            padding: 10px;
+            text-align: center;
+            width: 150px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .friend-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .friend-card img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            transition: transform 0.3s ease;
+        }
+
+        .friend-card img:hover {
+            transform: scale(1.1);
+        }
+
+        .friend-card h2 {
+            font-size: 16px;
+            margin: 10px 0 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="{% url 'posts:index' %}" class="navbar-brand">
+            <img src="{% static 'img/brand-white.png' %}" alt="logo">
+        </a>
+        <ul class="navbar-nav" id="navbarNav">
+            <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a href="{% url 'users:profile' request.user.id %}" class="nav-link">Профиль</a></li>
+                <li class="nav-item"><a href="{% url 'chats:message' user.id %}" class="nav-link">Сообщения</a></li>
+                <li class="nav-item"><a href="{% url 'users:friends' %}" class="nav-link">Друзья</a></li>
+            {% else %}
+                <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <!-- Остальные элементы справа -->
+</nav>
+
+<style>
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #3097D1;
+    padding: 10px 20px;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    margin-right: auto; /* Прижимает всю группу к левому краю */
+}
+
+.navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 20px; /* Отступ от логотипа */
+    display: flex;
+}
+
+/* Остальные стили остаются без изменений */
+.navbar-brand img {
+    width: 80px;
+    height: auto;
+}
+
+.nav-item {
+    margin-right: 15px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+
+</style>
+
+<style>
+body{background:url(https://bootstraptema.ru/images/bg/bg-1.png)}
+
+#main {
+ background-color: #f2f2f2;
+ padding: 20px;
+-webkit-border-radius: 4px;
+ -moz-border-radius: 4px;
+ -ms-border-radius: 4px;
+ -o-border-radius: 4px;
+ border-radius: 4px;
+ border-bottom: 4px solid #ddd;
+}
+#real-estates-detail #author img {
+ -webkit-border-radius: 100%;
+ -moz-border-radius: 100%;
+ -ms-border-radius: 100%;
+ -o-border-radius: 100%;
+ border-radius: 100%;
+ border: 5px solid #ecf0f1;
+ margin-bottom: 10px;
+}
+#real-estates-detail .sosmed-author i.fa {
+ width: 30px;
+ height: 30px;
+ border: 2px solid #bdc3c7;
+ color: #bdc3c7;
+ padding-top: 6px;
+ margin-top: 10px;
+}
+.panel-default .panel-heading {
+ background-color: #fff;
+}
+#real-estates-detail .slides li img {
+ height: 450px;
+}
+body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #3097D1;
+            padding: 10px 20px;
+        }
+        .navbar-brand img {
+            width: 80px;
+            height: auto;
+        }
+        .navbar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        .nav-item {
+            margin-right: 15px;
+        }
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .form-inline {
+            display: flex;
+            align-items: center;
+        }
+        .form-control {
+            padding: 5px;
+            margin-right: 10px;
+        }
+        .icon {
+            color: #CBE4F2;
+            font-size: 22px;
+            margin-left: 15px;
+        }
+        .avatar {
+            border-radius: 50%;
+            width: 32px;
+            height: auto;
+            margin-left: 15px;
+        }
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none; /* Скрыть навигацию на маленьких экранах */
+            }
+            .navbar-toggler {
+                display: block; /* Показать кнопку для мобильных устройств */
+                cursor: pointer;
+                background-color: transparent;
+                border: none;
+                color: white;
+                font-size: 20px;
+            }
+        }
+        .logout-button {
+    background-color: #dc3545; /* Красный цвет фона */
+    color: white; /* Белый цвет текста */
+    margin: 160px;
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Закругление углов */
+    cursor: pointer; /* Курсор при наведении */
+    font-size: 16px; /* Размер шрифта */
+    transition: background-color 0.3s ease; /* Плавный переход цвета при наведении */
+}
+
+.logout-button:hover {
+    background-color: #c82333; /* Темно-красный цвет при наведении */
+}
+
+.logout-button:focus {
+    outline: none; /* Убираем рамку при фокусе */
+}
+</style>
+<header>
+    <h1>Мои Друзья</h1>
+    <input type="text"  placeholder="Поиск друзей...">
+</header>
+<main>
+    <div class="friends-list" id="friends-list">
+        {% for friendship in friends %}
+        <div class="friend-card">
+            <img src="{{ friendship.friend.profile_picture.url }}" alt="{{ friendship.friend.username }}">
+            <h2>{{ friendship.friend.first_name }} {{ friendship.friend.last_name }}</h2>
+        </div>
+        {% endfor %}
+    </div>
+    <h1>Запросы в друзья</h1>
+<ul>
+    {% for request in received_requests %}
+        <li>
+            {{ request.from_user.username }}
+            <a href="{% url 'users:accept_friend_request' request.id %}">Принять</a>
+            <a href="{% url 'users:reject_friend_request' request.id %}">Отклонить</a>
+        </li>
+    {% endfor %}
+</ul>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

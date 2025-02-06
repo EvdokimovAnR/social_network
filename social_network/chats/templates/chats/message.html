@@ -9,31 +9,74 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <style>
+        /* Стили для шапки */
+        .header {
+            position: fixed; /* Фиксированное позиционирование */
+            top: 0; /* Прижимаем к верхнему краю */
+            left: 0; /* Прижимаем к левому краю */
+            width: 100%; /* Ширина на всю страницу */
+            display: flex;
+            align-items: center;
 
+            background-color: #3097D1; /* Цвет фона */
+            padding: 10px 20px;
+            z-index: 1000; /* Чтобы шапка была поверх других элементов */
+        }
 
+        /* Стили для кнопок */
+        .nav-button {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            left: 0;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Эффект при наведении */
+        }
+
+        /* Логотип */
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            left: 0;
+        }
+        .avatar-link {
+    margin-left: auto; /* Сдвигает аватар вправо */
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+}
+    </style>
 
 </head>
-<nav class="navbar">
-    <a href="{% url 'posts:index' %}" class="navbar-brand">
-        <img src="{% static 'img/brand-white.png' %}" alt="logo">
-    </a>
-    <ul class="navbar-nav" id="navbarNav">
-        <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
-                {% if user.is_authenticated %}
-                <li class="nav-item"><a href="{% url 'users:profile' request.user.id %}" class="nav-link">Профиль</a></li>
-                <li class="nav-item"><a href="{% url 'chats:message' user.id %}" class="nav-link">Сообщения</a></li>
-                {% else %}
-                <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
-                {% endif %}
 
-    </ul>
-    <form action="" class="form-inline d-none d-md-block">
-        <input type="text" name="search" id="search" placeholder="Search" class="form-control">
-    </form>
-<!--    <a href="notification.html" class="icon"><i class="far fa-bell"></i></a>-->
-    <img src="{% static 'img/avatar-dhg.png' %}" alt="" class="avatar">
-</nav>
 <body>
+<header class="header">
+        <!-- Логотип -->
+            <a href="{% url 'posts:index'%}" class="logo"><img src="{% static 'img/brand-white.png' %}" alt="logo" class="img-fluid" width="80px" height="100px"></a>
+
+
+        <!-- Кнопки -->
+        <nav>
+            <a href="{% url 'posts:index' %}" class="nav-button">Посты</a>
+            <a href="{% url 'users:profile' request.user.id %}" class="nav-button">Профиль</a>
+            <a href="{% url 'chats:message' user.id %}" class="nav-button">Сообщения</a>
+            <a href="{% url 'users:friends' %}" class="nav-button">Друзья</a>
+
+
+
+        </nav>
+    </header>
 
   <div class="container">
     <div class="row">
@@ -502,59 +545,22 @@
             background-color: #3097D1;
             padding: 10px 20px;
         }
+
         .navbar-brand img {
             width: 80px;
             height: auto;
         }
-        .navbar-nav {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-        .nav-item {
-            margin-right: 15px;
-        }
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 5px 10px;
-        }
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-        .form-inline {
+
+        .navbar-actions {
             display: flex;
             align-items: center;
+            gap: 15px; /* Отступ между элементами */
         }
-        .form-control {
-            padding: 5px;
-            margin-right: 10px;
-        }
-        .icon {
-            color: #CBE4F2;
-            font-size: 22px;
-            margin-left: 15px;
-        }
+
         .avatar {
             border-radius: 50%;
             width: 32px;
             height: auto;
-            margin-left: 15px;
-        }
-        @media (max-width: 768px) {
-            .navbar-nav {
-                display: none; /* Скрыть навигацию на маленьких экранах */
-            }
-            .navbar-toggler {
-                display: block; /* Показать кнопку для мобильных устройств */
-                cursor: pointer;
-                background-color: transparent;
-                border: none;
-                color: white;
-                font-size: 20px;
-            }
         }
         .logout-button {
     background-color: #dc3545; /* Красный цвет фона */

@@ -11,25 +11,68 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">-->
 <nav class="navbar">
-    <a href="{% url 'posts:index' %}" class="navbar-brand">
-        <img src="{% static 'img/brand-white.png' %}" alt="logo">
-    </a>
-    <ul class="navbar-nav" id="navbarNav">
-        <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
-                {% if user.is_authenticated %}
+    <div class="navbar-left">
+        <a href="{% url 'posts:index' %}" class="navbar-brand">
+            <img src="{% static 'img/brand-white.png' %}" alt="logo">
+        </a>
+        <ul class="navbar-nav" id="navbarNav">
+            <li class="nav-item"><a href="{% url 'posts:index'%}" class="nav-link active">Посты</a></li>
+            {% if user.is_authenticated %}
                 <li class="nav-item"><a href="{% url 'users:profile' request.user.id %}" class="nav-link">Профиль</a></li>
                 <li class="nav-item"><a href="{% url 'chats:message' user.id %}" class="nav-link">Сообщения</a></li>
-                {% else %}
+                <li class="nav-item"><a href="{% url 'users:friends' %}" class="nav-link">Друзья</a></li>
+            {% else %}
                 <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
-                {% endif %}
-
-    </ul>
-    <form action="" class="form-inline d-none d-md-block">
-        <input type="text" name="search" id="search" placeholder="Search" class="form-control">
-    </form>
-<!--    <a href="notification.html" class="icon"><i class="far fa-bell"></i></a>-->
-    <img src="{% static 'img/avatar-dhg.png' %}" alt="" class="avatar">
+            {% endif %}
+        </ul>
+    </div>
+    <!-- Остальные элементы справа -->
 </nav>
+
+<style>
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #3097D1;
+    padding: 10px 20px;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    margin-right: auto; /* Прижимает всю группу к левому краю */
+}
+
+.navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 20px; /* Отступ от логотипа */
+    display: flex;
+}
+
+/* Остальные стили остаются без изменений */
+.navbar-brand img {
+    width: 80px;
+    height: auto;
+}
+
+.nav-item {
+    margin-right: 15px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+
+</style>
 
 <style>
 body{background:url(https://bootstraptema.ru/images/bg/bg-1.png)}
@@ -294,6 +337,12 @@ body {
             </tr>
         </tbody>
     </table>
+    {% if is_friend%}
+    <a href="{% url 'users:delete_friend' user.id %}" class="add-post-button btn btn-danger">Удалить из друзей</a>
+    {% else %}
+    <a href="{% url 'users:add_friend' user.id %}" class="add-post-button btn btn-success">Добавить в друзья</a>
+    {% endif %}
+
     {% endif %}
 
 

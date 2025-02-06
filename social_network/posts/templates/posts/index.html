@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +30,7 @@
                 {% if user.is_authenticated %}
                 <li class="nav-item"><a href="{% url 'users:profile' request.user.id %}" class="nav-link">Профиль</a></li>
                 <li class="nav-item"><a href="{% url 'chats:message' user.id %}" class="nav-link">Сообщения</a></li>
+                <li class="nav-item"><a href="{% url 'users:friends' %}" class="nav-link">Друзья</a></li>
                 {% else %}
                 <li class="nav-item"><a href="{% url 'users:login'%}" class="nav-link">Войти</a></li>
                 {% endif %}
@@ -55,146 +57,78 @@
 
     <div class="modal fade" id="modalview">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-
             <div class="modal-content">
-
-
                 <div class="modal-header">
                     <div class="modal-title h4">Написать пост</div>
-
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-
-
                 <div class="modal-body">
-
-
                     <ul class="list-unstyled">
-
-
-                     <a href="#" class="text-decoration-none">
-                        <li class="media hover-media">
-
-                                <img src="static/img/avatar-dhg.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
-                                <div class="media-body text-dark">
-                                        <h6 class="media-header">Jchob Thunder and <strong> 1 others</strong></h6>
-                                        <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
-                                </div>
-
-                        </li>
-                    </a>
                     <hr class="my-3">
-
-
-
                     <a href="#" class="text-decoration-none">
                             <li class="media hover-media">
-
                                     <img src="img/avatar-fat.jpg" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                     <div class="media-body text-dark">
                                             <h6 class="media-header">Mark Otto and <strong> 3 others</strong></h6>
                                             <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
                                     </div>
-
                             </li>
                         </a>
-
-
                         <hr class="my-3">
-
-
                         <a href="#" class="text-decoration-none">
                             <li class="media hover-media">
-
                                     <img src="img/avatar-mdo.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                     <div class="media-body text-dark">
                                             <h6 class="media-header">Archer andu and <strong> 5 others</strong></h6>
                                             <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
                                     </div>
-
                             </li>
                         </a>
-
                         <hr class="my-3">
-
-
                         <a href="#" class="text-decoration-none">
                                 <li class="media hover-media">
-
                                         <img src="static/img/avatar-dhg.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                         <div class="media-body text-dark">
                                                 <h6 class="media-header">Jchob Thunder and <strong> 1 others</strong></h6>
                                                 <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
                                         </div>
-
                                 </li>
                             </a>
                             <hr class="my-3">
-
-
-
                             <a href="#" class="text-decoration-none">
                                     <li class="media hover-media">
-
                                             <img src="img/avatar-fat.jpg" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                             <div class="media-body text-dark">
                                                     <h6 class="media-header">Mark Otto and <strong> 3 others</strong></h6>
                                                     <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
                                             </div>
-
                                     </li>
                                 </a>
-
-
                                 <hr class="my-3">
-
-
                                 <a href="#" class="text-decoration-none">
                                     <li class="media hover-media">
-
                                             <img src="img/avatar-mdo.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                             <div class="media-body text-dark">
                                                     <h6 class="media-header">Archer andu and <strong> 5 others</strong></h6>
                                                     <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
                                             </div>
-
                                     </li>
                                 </a>
-
-
                                 <hr class="my-3">
                                 <a href="#" class="text-decoration-none">
                                         <li class="media hover-media">
-
                                                 <img src="static/img/avatar-dhg.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                                 <div class="media-body text-dark">
                                                         <h6 class="media-header">Jchob Thunder and <strong> 1 others</strong></h6>
                                                         <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
                                                 </div>
-
                                         </li>
                                     </a>
                                     <hr class="my-3">
-
-
-
                                     <a href="#" class="text-decoration-none">
                                             <li class="media hover-media">
-
                                                     <img src="img/avatar-fat.jpg" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
 
                                                     <div class="media-body text-dark">
@@ -202,61 +136,31 @@
                                                             <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
                                                     </div>
-
                                             </li>
                                         </a>
-
-
                                         <hr class="my-3">
-
-
                                         <a href="#" class="text-decoration-none">
                                             <li class="media hover-media">
-
                                                     <img src="img/avatar-mdo.png" alt="img" width="60px" height="60px" class="rounded-circle mr-3">
-
                                                     <div class="media-body text-dark">
                                                             <h6 class="media-header">Archer andu and <strong> 5 others</strong></h6>
                                                             <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-
                                                     </div>
-
                                             </li>
                                         </a>
-
-
-
-
                     </ul>
-
-
-
-
-
                 </div>
             </div>
-
-
         </div>
-
-
     </div>
-
-    <!-------------------------------MOdal Ends---------------------------->
-
-
-
-    <!-------------------------------------------Start Grids layout for lg-xl-3 columns and (xs-lg 1 columns)--------------------------------->
-
+<!--------------------------ПОЛЬЗОВАТЕЛЬ СЛЕВА СТРАНИЦЫ------------------------------>
 
     <div class="container">
         <div class="row">
-
-
             <!--------------------------left columns  start-->
 
             <div class="col-12 col-lg-3">
-
+<!--------------------------ПОЛЬЗОВАТЕЛЬ СЛЕВА СТРАНИЦЫ------------------------------>
                 <div class="left-column">
 
 
@@ -268,11 +172,6 @@
                         <img src="{% static 'img/default_avatar.png'%}" alt="" class="card-img-top img-fluid">
                         {% endif %}
                         <div class="card-body text-center ">
-                            {% if user.is_authenticated and user.profile_picture%}
-                            <img src="{{ user.profile_picture.url }}" alt="img" width="120px" height="120px" class="rounded-circle mt-n5">
-                            {% else %}
-                            <img src="{% static 'img/default_avatar.png'%}" alt="img" width="120px" height="120px" class="rounded-circle mt-n5">
-                            {% endif %}
                             <h5 class="card-title">{{ user.first_name}} {{ user.last_name }}</h5>
 <!--                            <p class="card-text text-justify mb-2">BIO</p>-->
                             <ul class="list-unstyled nav justify-content-center">
@@ -285,69 +184,25 @@
     </a>
                                 {% endif %}
 </ul>
-
                         </div>
                     </div>
                     <div class="card shadow-sm card-left2 mb-4">
-
-<!--                        <div class="card-body">-->
-
-<!--                                <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1">Edit</a></small></h5>-->
-
-<!--                                <p class="card-text"> <i class="fas fa-calendar-week mr-2"></i> Went to <a href="#" class="text-decoration-none">oh canada</a></p>-->
-
-<!--                                <p class="card-text"> <i class="fas fa-user-friends mr-2"></i> Become a friend with <a href="#" class="text-decoration-none">obama</a></p>-->
-<!--                                <p class="card-text"> <i class="far fa-building mr-2"></i> Work at <a href="#" class="text-decoration-none">Github</a></p>-->
-<!--                                <p class="card-text"> <i class="fas fa-home mr-2"></i> Live in <a href="#" class="text-decoration-none">San francisco</a></p>-->
-<!--                                <p class="card-text"> <i class="fas fa-map-marker mr-2"></i> From <a href="#" class="text-decoration-none">Seattle, WA</a></p>-->
-
-
-
-
-<!--                        </div>-->
                     </div>
                     <div class="card shadow-sm card-left3 mb-4">
-
-<!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title">Photos<small class="ml-2"><a href="#">.Edit </a></small></h5>-->
-
-<!--                            <div class="row">-->
-<!--                                <div class="col-6 p-1">-->
-<!--                                    <a href="img/left1.jpg" data-lightbox="id" ><img src="img/left1.jpg" alt="img" class="img-fluid my-2"></a>-->
-<!--                                    <a href="img/left2.jpg"data-lightbox="id"><img src="img/left2.jpg" alt="img" class="img-fluid my-2"></a>-->
-<!--                                    <a href="img/left3.jpg"data-lightbox="id"><img src="img/left3.jpg" alt="img" class="img-fluid my-2"></a>-->
-
-<!--                                </div>-->
-
-
-<!--                                <div class="col-6 p-1">-->
-<!--                                        <a href="img/left4.jpg"data-lightbox="id"><img src="img/left4.jpg" alt="img" class="img-fluid my-2"></a>-->
-<!--                                        <a href="img/left5.jpg"data-lightbox="id"><img src="img/left5.jpg" alt="img" class="img-fluid my-2"></a>-->
-<!--                                        <a href="img/left6.jpg"data-lightbox="id"><img src="img/left6.jpg" alt="img" class="img-fluid my-2"></a>-->
-
-<!--                                    </div>-->
-
-<!--                            </div>-->
-
-<!--                        </div>-->
-
                         </div>
                 </div>
+<!--------------------------КОНЕЦ ПОЛЬЗОВАТЕЛЯ СЛЕВА СТРАНИЦЫ------------------------------>
             </div>
- <!--------------------------Ends Left columns-->
-
-
-
-
-
- <!---------------------------------------Middle columns  start---------------->
-            <div class="col-12 col-lg-6" >
-                <div class="middle-column">
-                    <div class="card" >
-
-                        <div class="card-header bg-transparent">
+ <!------------------ПОСТЫ---------------->
+<div class="col-12 col-lg-6" >
+    <div class="middle-column">
+        <div class="card" >
+            <div class="card-header bg-transparent">
     <button class="add-post-button btn btn-success" id="add-post-button">Добавить пост</button>
-
+                {% if user.is_authenticated %}
+    <a href="{% url 'posts:user_posts' %}" class="add-post-button btn btn-success" style="margin-left:45px">Мои посты</a>
+    <a href="{% url 'posts:all_posts' %}" class="add-post-button btn btn-success" style="margin-left:45px">Все посты</a>
+                {% endif %}
     {% if user.is_authenticated %}
         <form action="{% url 'posts:index'%}" class="form-inline" id="post-form" style="display: none;" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -364,12 +219,9 @@
             <a href="{% url 'users:login' %}" class="btn btn-primary">Авторизация</a>
              <a href="{% url 'users:registration' %}" class="btn btn-secondary">Регистрация</a>
         </div>
-
     {% endif %}
 </div>
-
-
-                        {% for post in posts %}
+{% for post in posts %}
    <div class="card-body">
     <div class="media">
         <a href="{% url 'users:profile'   post.user.id %}">
@@ -379,7 +231,6 @@
         <img src="{% static 'img/default_avatar.png' %}" alt="img" width="55px" height="55px" class="rounded-circle mr-3">
     {% endif %}
 </a>
-
         <div class="media-body">
             <h5>{{ post.user.username }}</h5>
             <p class="card-text text-justify">{{ post.content }}</p>
@@ -396,115 +247,49 @@
         <small> {{ post.created_at }}</small>
     </div>
    </div>
-                        {% endfor %}
 
+<!------------------------КОММЕНТАРИИ--------------------->
 
+    <button class="toggle-comments-btn" data-post-id="{{ post.id }}">Комментарии</button>
 
- <hr>
-
-<div class="card-body">
-
-    <div class="media">
-            <img src="img/avatar-fat.jpg" alt="img" width="55px" height="55px" class="rounded-circle mr-3">
-
-        <div class="media-body">
-                <h5>Jacob Thornton</h5>
-                <p class="text-justify">Donec id elit non mi porta gravida at eget metus. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-
-
-        </div>
-
-        <small>14 min</small>
-
-    </div>
-
-
-
-
-
-</div>
-<hr>
-
-<div class="card-body">
-
-    <div class="media">
-
-            <img src="img/avatar-mdo.png" alt="img" width="55px" height="55px" class="rounded-circle mr-3">
-            <div class="media-body">
-                <h5>Mark Otto</h5>
-                <p class="text-justify">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-             <a href="img/mid5.jpg" data-lightbox="id"><img src="img/mid5.jpg" alt="" class="img-fluid shadow-sm img-thumbnail">   </a>
-
+    <!-- Блок с комментариями (изначально скрыт) -->
+    <div class="comments-section" id="comments-{{ post.id }}" style="display: none;">
+    {% for comment in post.comments.all %}
+        <div class="comment">
+            <div class="comment-avatar">
+                {% if comment.user.profile_picture %}
+                    <img src="{{ comment.user.profile_picture.url }}" alt="img" width="55px" height="55px" class="rounded-circle">
+                {% else %}
+                    <img src="{% static 'img/default_avatar.png' %}" alt="img" width="55px" height="55px" class="rounded-circle">
+                {% endif %}
             </div>
+            <div class="comment-text">
+                <strong>{{ comment.user.first_name }} {{ comment.user.last_name }}:</strong>
+                <p>{{ comment.text }}</p>
+            </div>
+        </div>
+    {% endfor %}
+     {% if user.is_authenticated %}
+    <!-- Кнопка "Добавить комментарий" -->
+    <button class="add-comment-btn" data-post-id="{{ post.id }}">Добавить комментарий</button>
 
-
-            <small class="text-muted">10 min</small>
-
-
-
+    <!-- Форма для написания комментария (изначально скрыта) -->
+    <form class="comment-form" id="comment-form-{{ post.id }}" style="display: none;" method="POST" action="{% url 'posts:comment_add' %}">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <textarea name="text" rows="3" required></textarea>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+    {% endif %}
     </div>
 
-
-
-
-</div>
-
-
-
-
-
-
-
-
+<!------------------------КОНЕЦ КОММЕНТАРИЕВ --------------------->
+  {% endfor %}
+ <hr>
  </div>
-
-
-
-
-
-
-
-
-
  </div>
-
-
-
-
-
-
-
-
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <br> <br> <br><br> <br> <br>
-
-<!------------------------Middle column Ends---------------->
-
-
-
-
-
-
-
-
-<!---------------------------Statrs Right Columns----------------->
-
-
+<!------------------КОНЕЦ ПОСТОВ---------------->
 
 <div class="col-12 col-lg-3">
 
@@ -559,29 +344,25 @@
 
         </div>
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <p>&copy; 2018 Bootstrap
+<!--        <div class="card shadow-sm">-->
+<!--            <div class="card-body">-->
+<!--&lt;!&ndash;                <p>&copy; 2018 Bootstrap&ndash;&gt;-->
 
 
 
-                        <a href="#">About</a>
-                        <a href="#">Help</a>
-                        <a href="#">Terms</a>
-                        <a href="#">Privacy</a>
-                        <a href="#">Cookies</a>
-                        <a href="#">Ads </a>
-                        <a href="#">Info</a>
-                        <a href="#">Brand</a>
-                        <a href="#">Blog</a>
-                        <a href="#">Status</a>
-                        <a href="#">Apps</a>
-                        <a href="#">Jobs</a>
-                        <a href="#">Advertise</a>
-
-
-
-
+<!--&lt;!&ndash;                        <a href="#">About</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Help</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Terms</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Privacy</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Cookies</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Ads </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Info</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Brand</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Blog</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Status</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Apps</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Jobs</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a href="#">Advertise</a>&ndash;&gt;-->
 
 
 
@@ -595,10 +376,14 @@
 
 
 
-                </p>
-            </div>
 
-        </div>
+
+
+
+<!--&lt;!&ndash;                </p>&ndash;&gt;-->
+<!--            </div>-->
+
+<!--        </div>-->
 
 
 
@@ -710,8 +495,118 @@ textarea[name="content"] {
     text-align: center;
     margin-top: 10px;
 }
-</style>
+.toggle-comments-btn {
+    background-color: #3097D1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
+.toggle-comments-btn:hover {
+    background-color: #1c7ab3;
+}
+
+/* Стили для блока комментариев */
+.comments-section {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.comment {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.comment:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Стили для кнопки "Добавить комментарий" */
+.add-comment-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add-comment-btn:hover {
+    background-color: #218838;
+}
+
+/* Стили для формы комментария */
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.comment-form button {
+    margin-top: 10px;
+}
+.comment {
+    display: flex; /* Используем flexbox для выравнивания элементов */
+    align-items: flex-start; /* Выравнивание по верхнему краю */
+    margin-bottom: 10px; /* Отступ между комментариями */
+}
+
+.comment-avatar {
+    margin-right: 10px; /* Отступ между аватаром и текстом комментария */
+}
+
+.comment-text {
+    flex-grow: 1; /* Позволяет тексту занимать оставшееся пространство */
+}
+
+</style>
+<script>
+    // Функция для обработки нажатия на кнопку "Комментарии"
+    document.querySelectorAll('.toggle-comments-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            const commentsSection = document.getElementById(`comments-${postId}`);
+
+            // Переключаем видимость комментариев
+            if (commentsSection.style.display === 'none') {
+                commentsSection.style.display = 'block';
+                this.textContent = 'Скрыть комментарии';
+            } else {
+                commentsSection.style.display = 'none';
+                this.textContent = 'Комментарии';
+            }
+        });
+    });
+
+    // Функция для обработки нажатия на кнопку "Добавить комментарий"
+    document.querySelectorAll('.add-comment-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            const commentForm = document.getElementById(`comment-form-${postId}`);
+
+            // Переключаем видимость формы
+            if (commentForm.style.display === 'none') {
+                commentForm.style.display = 'block';
+                this.textContent = 'Скрыть форму';
+            } else {
+                commentForm.style.display = 'none';
+                this.textContent = 'Добавить комментарий';
+            }
+        });
+    });
+</script>
 
 
 

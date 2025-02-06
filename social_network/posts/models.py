@@ -9,3 +9,13 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Post by {self.user.username} on {self.created_at.strftime("%Y-%m-%d %H:%M:%S")}'
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(to=Post, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment by {self.user.username} on {self.created_at.strftime("%Y-%m-%d %H:%M:%S")}'
