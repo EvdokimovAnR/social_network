@@ -337,10 +337,15 @@ body {
             </tr>
         </tbody>
     </table>
-    {% if is_friend%}
+
+    {% if is_friend %}
     <a href="{% url 'users:delete_friend' user.id %}" class="add-post-button btn btn-danger">Удалить из друзей</a>
+    {% elif friend_request_sent %}
+    <button class="add-post-button btn btn-secondary" disabled>Заявка в друзья отправлена</button>
+    {% elif friend_request_sent and friend_request.from_user == user %}
+        <button class="add-post-button btn btn-secondary" disabled>{{ friend_request.from_user}} {{ user }}</button>
     {% else %}
-    <a href="{% url 'users:add_friend' user.id %}" class="add-post-button btn btn-success">Добавить в друзья</a>
+    <a href="{% url 'users:send_friend_request' user.id %}" class="add-post-button btn btn-success" id="add-friend-btn">Добавить в друзья</a>
     {% endif %}
 
     {% endif %}
@@ -408,7 +413,36 @@ body {
         }
     }
 </script>
+<script>
+    document.getElementById('add-friend-btn').addEventListener('click', function(event) {
+        event.preventDefault(); // Отменяем стандартное поведение ссылки
 
+        const button = this;
+        const url = button.href;
+
+        // Отправляем запрос на сервер
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest', // Для обработки AJAX на сервере
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Меняем текст кнопки и блокируем её
+                button.textContent = 'Заявка отправлена';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-secondary');
+                button.removeAttribute('href');
+                button.setAttribute('disabled', true);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    });
+</script>
 </body>
 </html>
 

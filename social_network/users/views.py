@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from .models import User, FriendShip, FriendRequest
-
+from django.http import JsonResponse
 
 def login(request):
     if request.method == 'POST':
@@ -35,11 +35,12 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
-
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)  # Получаем пользователя по ID
     is_owner = request.user == user
     is_friend = False
+    friend_request_sent = FriendRequest.objects.filter(from_user=request.user, to_user=user).exists()
+    friend_request = FriendRequest.objects.filter(from_user=request.user, to_user=user)
     if request.user.is_authenticated:
         is_friend = FriendShip.objects.filter(user=request.user, friend=user).exists()
     if request.method == 'POST' and is_owner:
@@ -50,10 +51,8 @@ def profile(request, user_id):
     else:
         form = UserProfileForm(instance=user)
 
-    context = {'user': user, 'form': form, 'is_owner': is_owner, 'is_friend': is_friend}
+    context = {'user': user, 'form': form, 'is_owner': is_owner, 'is_friend': is_friend, 'friend_request_sent': friend_request_sent, 'friend_request': friend_request}
     return render(request, 'users/profile.html', context)
-
-
 
 
 def logout(request):
@@ -63,7 +62,8 @@ def logout(request):
 
 def friends(request):
     all_friends = FriendShip.objects.filter(user=request.user)
-    return render(request, 'users/friends.html', {'friends': all_friends})
+    received_requests = FriendRequest.objects.filter(to_user=request.user, is_accepted=False)
+    return render(request, 'users/friends.html', {'friends': all_friends, 'received_requests': received_requests})
 
 
 def add_friend(request, friend_id):
@@ -87,7 +87,8 @@ def send_friend_request(request, user_id):
     if request.user != to_user:
         if not FriendRequest.objects.filter(from_user=request.user, to_user=to_user).exists():
             FriendRequest.objects.create(from_user=request.user, to_user=to_user)
-    return HttpResponseRedirect(reverse('users:profile', args=[to_user.id]))
+            return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
 
 
 def accept_friend_request(request, request_id):

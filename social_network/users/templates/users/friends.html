@@ -109,7 +109,7 @@
             margin: 15px;
             padding: 10px;
             text-align: center;
-            width: 150px;
+            width: 190px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -197,7 +197,57 @@
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
 }
+/* Общие стили для списка друзей и запросов */
+    .friends-list, .requests-list {
+        display: flex;
+        flex-direction: row; /* Элементы в строку */
+        flex-wrap: wrap; /* Перенос на новую строку, если не хватает места */
+        gap: 20px; /* Расстояние между элементами */
+    }
 
+    /* Стили для карточки друга или заявки */
+    .friend-card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        width: 200px; /* Фиксированная ширина карточки */
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .friend-card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+    .friend-card h2 {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    /* Стили для кнопок принятия и отклонения */
+    .request-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .accept-btn, .reject-btn {
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        color: white;
+    }
+
+    .accept-btn {
+        background-color: green;
+    }
+
+    .reject-btn {
+        background-color: red;
+    }
 
 </style>
 
@@ -327,24 +377,30 @@ body {
     <input type="text"  placeholder="Поиск друзей...">
 </header>
 <main>
+    <!-- Список друзей -->
     <div class="friends-list" id="friends-list">
         {% for friendship in friends %}
         <div class="friend-card">
-            <img src="{{ friendship.friend.profile_picture.url }}" alt="{{ friendship.friend.username }}">
+            <a href="{% url 'users:profile' friendship.friend.id%}"><img src="{{ friendship.friend.profile_picture.url }}"></a>
             <h2>{{ friendship.friend.first_name }} {{ friendship.friend.last_name }}</h2>
         </div>
         {% endfor %}
     </div>
+
+    <!-- Запросы в друзья -->
     <h1>Запросы в друзья</h1>
-<ul>
-    {% for request in received_requests %}
-        <li>
-            {{ request.from_user.username }}
-            <a href="{% url 'users:accept_friend_request' request.id %}">Принять</a>
-            <a href="{% url 'users:reject_friend_request' request.id %}">Отклонить</a>
-        </li>
-    {% endfor %}
-</ul>
+    <div class="requests-list">
+        {% for request in received_requests %}
+        <div class="friend-card">
+            <a href="{% url 'users:profile' request.from_user.id%}"><img src="{{ request.from_user.profile_picture.url }}"></a>
+            <h2>{{ request.from_user.first_name }} {{ request.from_user.last_name }} хочет добавить вас в друзья.</h2>
+            <div class="request-actions">
+                <a href="{% url 'users:accept_friend_request' request.id %}" class="accept-btn">Принять</a>
+                <a href="{% url 'users:reject_friend_request' request.id %}" class="reject-btn">Отклонить</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </main>
 
 <script src="script.js"></script>
