@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.urls import reverse
 from .models import Post, Comment
 from .forms import PostAdd, CommentAdd
+from users.models import FriendShip
 
 
 def index(request):
@@ -15,27 +16,35 @@ def index(request):
     posts = Post.objects.all().order_by('-created_at')
     user = request.user
     posts_count = 0
+    friends_count = 0
     if request.user.is_authenticated:
         posts_count = Post.objects.filter(user=user).count()
-    context = {'user': user, 'posts': posts, 'posts_count': posts_count}
+        friends_count = FriendShip.objects.filter(user=user).count()
+    context = {'user': user, 'posts': posts, 'posts_count': posts_count, 'friends_count': friends_count}
     return render(request, 'posts/index.html', context)
 
 
 def all_posts(request):
+    user = request.user
     posts = Post.objects.all().order_by('-created_at')
     posts_count = 0
+    friends_count = 0
     if request.user.is_authenticated:
         posts_count = Post.objects.filter(user=request.user).count()
-    context = {'posts':posts, 'posts_count': posts_count}
+        friends_count = FriendShip.objects.filter(user=user).count()
+    context = {'posts':posts, 'posts_count': posts_count, 'friends_count': friends_count}
     return render(request, 'posts/index.html', context)
 
 
 def user_posts(request):
+    user = request.user
     posts = Post.objects.filter(user=request.user).order_by('-created_at')
     posts_count = 0
+    friends_count = 0
     if request.user.is_authenticated:
         posts_count = Post.objects.filter(user=request.user).count()
-    context = {'posts': posts, 'posts_count': posts_count}
+        friends_count = FriendShip.objects.filter(user=user).count()
+    context = {'posts': posts, 'posts_count': posts_count, 'friends_count': friends_count}
     return render(request, 'posts/index.html', context)
 
 

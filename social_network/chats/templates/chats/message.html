@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
         /* Стили для шапки */
         .header {
@@ -56,6 +57,58 @@
     height: 32px;
     object-fit: cover;
 }
+/* Основные стили для формы поиска */
+.search-form {
+    margin: 2px 0;
+    width: 100%;
+    max-width: 400px; /* Ограничиваем ширину формы */
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5; /* Светлый фон */
+    border-radius: 25px; /* Закругленные углы */
+    padding: 5px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень для эффекта "поднятости" */
+    transition: box-shadow 0.3s ease;
+}
+
+.search-container:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Увеличиваем тень при наведении */
+}
+
+.search-input {
+    flex: 1; /* Занимает все доступное пространство */
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    padding: 10px;
+    color: #333; /* Цвет текста */
+}
+
+.search-input::placeholder {
+    color: #999; /* Цвет плейсхолдера */
+}
+
+.search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    color: #666; /* Цвет иконки */
+    transition: color 0.3s ease;
+}
+
+.search-button:hover {
+    color: #333; /* Цвет иконки при наведении */
+}
+
+/* Иконка лупы (используем Font Awesome) */
+.fas.fa-search {
+    font-size: 18px;
+}
     </style>
 
 </head>
@@ -82,9 +135,15 @@
     <div class="row">
       <section class="discussions">
         <div class="discussion search">
-          <div class="searchbar">
-            <i class="fa fa-search" aria-hidden="true"></i>
-            <input type="text" placeholder="Search..."></input>
+          <div>
+              <form method="GET" action="{% url 'chats:message' recipient.id %}" class="search-form">
+    <div class="search-container">
+        <input type="text" name="search" placeholder="Поиск диалога..." value="{{ search_query }}" class="search-input">
+        <button type="submit" class="search-button">
+            <i class="fas fa-search"></i> <!-- Иконка лупы из Font Awesome -->
+        </button>
+    </div>
+</form>
           </div>
         </div>
         {% for users in users_with_last_message %}

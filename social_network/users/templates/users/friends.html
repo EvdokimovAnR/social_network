@@ -137,7 +137,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar">
+<nav class="navbar" style="position: sticky; top: 0; z-index: 1000;">
     <div class="navbar-left">
         <a href="{% url 'posts:index' %}" class="navbar-brand">
             <img src="{% static 'img/brand-white.png' %}" alt="logo">
@@ -200,10 +200,12 @@
 /* Общие стили для списка друзей и запросов */
     .friends-list, .requests-list {
         display: flex;
+        justify-content: center;
         flex-direction: row; /* Элементы в строку */
         flex-wrap: wrap; /* Перенос на новую строку, если не хватает места */
         gap: 20px; /* Расстояние между элементами */
     }
+
 
     /* Стили для карточки друга или заявки */
     .friend-card {
@@ -371,11 +373,60 @@ body {
 .logout-button:focus {
     outline: none; /* Убираем рамку при фокусе */
 }
+/* Общие стили для формы поиска */
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между полем ввода и кнопкой */
+    max-width: 500px; /* Максимальная ширина формы */
+    margin: 20px auto; /* Центрирование формы */
+}
+
+/* Стили для поля ввода */
+.search-input {
+    flex: 1; /* Поле ввода занимает всё доступное пространство */
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 25px; /* Закругленные углы */
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #007BFF; /* Изменение цвета рамки при фокусе */
+}
+
+/* Стили для кнопки "Найти" */
+.search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF; /* Синий цвет кнопки */
+    border: none;
+    border-radius: 25px; /* Закругленные углы */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #0056b3; /* Темно-синий цвет при наведении */
+}
+h1 {
+  text-align: center; /* Центрируем текст по горизонтали */
+  margin: 20px 0; /* Добавляем отступы сверху и снизу */
+}
+
 </style>
 <header>
     <h1>Мои Друзья</h1>
-    <input type="text"  placeholder="Поиск друзей...">
+    <form method="GET" action="{% url 'users:friends' %}" class="search-form">
+        <input type="text" name="search" placeholder="Поиск друзей..." value="{{ search_query }}" class="search-input">
+        <button type="submit" class="search-button">Найти</button>
+        <button type="submit" name="show_all" value="true" class="search-button">Все друзья</button>
+    </form>
 </header>
+
 <main>
     <!-- Список друзей -->
     <div class="friends-list" id="friends-list">
@@ -389,9 +440,9 @@ body {
 
     <!-- Запросы в друзья -->
     <h1>Запросы в друзья</h1>
-    <div class="requests-list">
+    <div class="requests-list" id="requests-list">
         {% for request in received_requests %}
-        <div class="friend-card">
+        <div class="friend-card" >
             <a href="{% url 'users:profile' request.from_user.id%}"><img src="{{ request.from_user.profile_picture.url }}"></a>
             <h2>{{ request.from_user.first_name }} {{ request.from_user.last_name }} хочет добавить вас в друзья.</h2>
             <div class="request-actions">
@@ -403,6 +454,6 @@ body {
     </div>
 </main>
 
-<script src="script.js"></script>
+
 </body>
 </html>

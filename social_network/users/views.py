@@ -5,6 +5,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from .models import User, FriendShip, FriendRequest
 from django.http import JsonResponse
+from django.db.models import Q
 
 def login(request):
     if request.method == 'POST':
@@ -61,9 +62,20 @@ def logout(request):
 
 
 def friends(request):
-    all_friends = FriendShip.objects.filter(user=request.user)
+    search_query = request.GET.get('search', '')
+    show_all = request.GET.get('show_all', None)
+    if show_all:
+        all_friends = FriendShip.objects.filter(user=request.user)
+    elif search_query:
+        search_terms = search_query.split()
+        q_objects = Q()
+        for term in search_terms:
+            q_objects |= Q(friend__first_name__icontains=term) | Q(friend__last_name__icontains=term)
+        all_friends = FriendShip.objects.filter(q_objects, user=request.user)
+    else:
+        all_friends = FriendShip.objects.filter(user=request.user)
     received_requests = FriendRequest.objects.filter(to_user=request.user, is_accepted=False)
-    return render(request, 'users/friends.html', {'friends': all_friends, 'received_requests': received_requests})
+    return render(request, 'users/friends.html', {'friends': all_friends, 'received_requests': received_requests, 'search_query': search_query})
 
 
 def add_friend(request, friend_id):

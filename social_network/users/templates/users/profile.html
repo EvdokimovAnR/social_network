@@ -225,7 +225,7 @@ body {
  <div class="panel-body">
  <ul id="myTab" class="nav nav-pills">
 
-     {% if not is_owner %}
+     {% if not is_owner and is_friend %}
      <li class="active"><a href="#detail" data-toggle="tab">О пользователе</a></li>
  <li class=""><a href="{% url 'chats:message' user.id %}" >Отправить сообщение</a></li>
      {% endif %}
